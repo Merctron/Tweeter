@@ -85,5 +85,23 @@ def tweet():
     tweet = "{} {}".format(antecedent_list[ant_index].format(tweet_subj), postcedent_list[post_index])
     return tweet
 
+@app.route("/stats")
+def stats():
+    adj_len = len(adj_list)
+    obj_len = len(obj_list)
+    ant_len = len(antecedent_list)
+    post_len = len(postcedent_list)
+
+    stat_string_1 = " Tweeter Stats - Number of adjectives: {},".format(adj_len)
+    stat_string_2 = " Number of objects: {},".format(obj_len)
+    stat_string_3 = " Number of antecedents: {},".format(ant_len)
+    stat_string_4 = " Number of postcedents: {}".format(post_len)
+
+    return stat_string_1 + stat_string_2 + stat_string_3 + stat_string_4
+
+#"Tweeter Stats - Number of adjectives: <num_adj>, Number of objects: <num_obj>, Number of antecedents: <num_ant>, Number of postcedents: <num_post>"
+
+
+
 if __name__ == "__main__":
     app.run()

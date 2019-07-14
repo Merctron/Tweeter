@@ -1,6 +1,6 @@
 import random
 
-from flask import Flask
+from flask import Flask, jsonify, render_template, request
 app = Flask(__name__)
 
 adj_list = [
@@ -72,18 +72,30 @@ postcedent_list = [
 
 
 @app.route("/")
-def hello():
-    return "Hello World!"
+def index():
+    return render_template('index.html')
 
-@app.route("/tweet")
+@app.route("/tweet", methods=['GET'])
 def tweet():
-    adj_index = random.randint(0, len(adj_list) - 1)
-    obj_index = random.randint(0, len(obj_list) - 1)
-    ant_index = random.randint(0, len(antecedent_list) - 1)
-    post_index = random.randint(0, len(postcedent_list) - 1)
-    tweet_subj = "{} {}".format(adj_list[adj_index], obj_list[obj_index])
-    tweet = "{} {}".format(antecedent_list[ant_index].format(tweet_subj), postcedent_list[post_index])
-    return tweet
+    # Respond if the request is a GET request.
+    if request.method == 'GET':
+        # Log out request recieved to console.
+        print('Recieved GET /tweet')
+
+        adj_index  = random.randint(0, len(adj_list) - 1)
+        obj_index  = random.randint(0, len(obj_list) - 1)
+        ant_index  = random.randint(0, len(antecedent_list) - 1)
+        post_index = random.randint(0, len(postcedent_list) - 1)
+
+        tweet_subj = "{} {}".format(adj_list[adj_index], obj_list[obj_index])
+        tweet = "{} {}".format(antecedent_list[ant_index].format(tweet_subj), postcedent_list[post_index])
+
+        resp = {
+            'tweet': tweet
+        }
+
+        # Convert to JSON and send response
+        return jsonify(resp)
 
 @app.route("/stats")
 def stats():

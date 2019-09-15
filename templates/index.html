@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tweeter</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Welcome to Tweeter!</h1>
+    <h2 id="tweet"></h2>
+</body>
+<script>
+// Use strict mode to eliminate JS silent errors by using a restricted
+// variant.
+"use strict";
+
+// Wait until the webpage has loaded to start running our JS code.
+$(document).ready(function() {
+    // Fetch a tweet to display.
+    $.get("/tweet", null, "json").done((data) => {
+        console.log(`Received tweet: ${JSON.stringify(data)}`);
+        $("#tweet").html(data.tweet);
+    });
+});
+</script>
+</html>

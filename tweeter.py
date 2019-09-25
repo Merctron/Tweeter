@@ -70,32 +70,33 @@ postcedent_list = [
     'No need to be scared'
 ]
 
+def generate_tweet():
+    adj_index = random.randint(0, len(adj_list) - 1)
+    obj_index = random.randint(0, len(obj_list) - 1)
+    ant_index = random.randint(0, len(antecedent_list) - 1)
+    post_index = random.randint(0, len(postcedent_list) - 1)
+    tweet_subj = "{} {}".format(adj_list[adj_index], obj_list[obj_index])
+    tweet = "{} {}".format(antecedent_list[ant_index].format(tweet_subj), postcedent_list[post_index])
+    return tweet
 
 @app.route("/")
 def index():
     return render_template('index.html')
-
+       
 @app.route("/tweet", methods=['GET'])
 def tweet():
     # Respond if the request is a GET request.
     if request.method == 'GET':
         # Log out request recieved to console.
         print('Recieved GET /tweet')
-
-        adj_index  = random.randint(0, len(adj_list) - 1)
-        obj_index  = random.randint(0, len(obj_list) - 1)
-        ant_index  = random.randint(0, len(antecedent_list) - 1)
-        post_index = random.randint(0, len(postcedent_list) - 1)
-
-        tweet_subj = "{} {}".format(adj_list[adj_index], obj_list[obj_index])
-        tweet = "{} {}".format(antecedent_list[ant_index].format(tweet_subj), postcedent_list[post_index])
-
+        tweet = generate_tweet()
         resp = {
             'tweet': tweet
         }
 
         # Convert to JSON and send response
         return jsonify(resp)
+    
 
 @app.route("/stats")
 def stats():
@@ -111,7 +112,23 @@ def stats():
 
     return stat_string_1 + stat_string_2 + stat_string_3 + stat_string_4
 
-#"Tweeter Stats - Number of adjectives: <num_adj>, Number of objects: <num_obj>, Number of antecedents: <num_ant>, Number of postcedents: <num_post>"
+# 
+
+@app.route("/reversedtweet")
+def reversedtweet():
+
+    tweet = generate_tweet()
+
+    reversed_tweet = tweet[::-1]
+
+    return reversed_tweet
+
+ #  Alternative to string reversal solution above
+ #   for x in range(len(tweet)):
+ #       reverse_x = len(tweet) - x - 1
+ #       reversed_tweet = reversed_tweet + tweet[reverse_x]
+ #  return reversed_tweet
+
 
 
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tweeter</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Tweeter: Sentiment Analyzer</h1>
+    <hr></hr>
+    <input id="phrase" type="text" placeholder="Phrase for analysis"></input>
+    <button id="analyze">Analyze</button>
+    <h2 id="sentiment"></h2>
+</body>
+<script>
+// Use strict mode to eliminate JS silent errors by using a restricted
+// variant.
+"use strict";
+
+// Wait until the webpage has loaded to start running our JS code.
+$(document).ready(function() {
+	$("#analyze").click(function () {
+		// Get the phrase to analyze from the input box.
+		let request = {
+			phrase: $("#phrase").val()
+		}
+
+		// Send a request with the phrase for analysis.
+		$.get("/analysis/sentiment", request, "json").done((data) => {
+		    console.log(`Received sentiment information: ${JSON.stringify(data)}`);
+		    $("#sentiment").html(`This phrase's sentiment is: ${data.sentiment}`);
+		});
+	});
+});
+</script>
+</html>

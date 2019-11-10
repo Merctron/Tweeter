@@ -1,6 +1,7 @@
 import random
 
 from flask import Flask, jsonify, render_template, request
+from sentiment_analyzer import getSentiment
 app = Flask(__name__)
 
 adj_list = [
@@ -129,7 +130,26 @@ def reversedtweet():
  #       reversed_tweet = reversed_tweet + tweet[reverse_x]
  #  return reversed_tweet
 
+@app.route("/analysis")
+def analysis():
+    return render_template('analysis.html')
 
+@app.route("/analysis/sentiment", methods=['GET'])
+def analyze_sentiment():
+    # Respond if the request is a GET request.
+    if request.method == 'GET':
+        # Log out request recieved to console.
+        print('Recieved GET /sentiment')
+
+        phrase    = request.args.get('phrase')
+        sentiment = getSentiment(phrase)
+
+        resp = {
+            'sentiment': sentiment
+        }
+
+        # Convert to JSON and send response
+        return jsonify(resp)
 
 
 if __name__ == "__main__":

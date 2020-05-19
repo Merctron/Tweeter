@@ -1,8 +1,8 @@
 import random
 
 from flask import Flask, jsonify, render_template, request
-from sentiment_analyzer import getSentiment
-app = Flask(__name__)
+from app.sentiment_analyzer.sentiment_analyzer import getSentiment
+application = Flask(__name__)
 
 adj_list = [
     'Fire-breathing',
@@ -80,11 +80,11 @@ def generate_tweet():
     tweet = "{} {}".format(antecedent_list[ant_index].format(tweet_subj), postcedent_list[post_index])
     return tweet
 
-@app.route("/")
+@application.route("/")
 def index():
     return render_template('index.html')
        
-@app.route("/tweet", methods=['GET'])
+@application.route("/tweet", methods=['GET'])
 def tweet():
     # Respond if the request is a GET request.
     if request.method == 'GET':
@@ -99,7 +99,7 @@ def tweet():
         return jsonify(resp)
     
 
-@app.route("/stats")
+@application.route("/stats")
 def stats():
     adj_len = len(adj_list)
     obj_len = len(obj_list)
@@ -113,9 +113,7 @@ def stats():
 
     return stat_string_1 + stat_string_2 + stat_string_3 + stat_string_4
 
-# 
-
-@app.route("/reversedtweet")
+@application.route("/reversedtweet")
 def reversedtweet():
 
     tweet = generate_tweet()
@@ -130,11 +128,11 @@ def reversedtweet():
  #       reversed_tweet = reversed_tweet + tweet[reverse_x]
  #  return reversed_tweet
 
-@app.route("/analysis")
+@application.route("/analysis")
 def analysis():
     return render_template('analysis.html')
 
-@app.route("/analysis/sentiment", methods=['GET'])
+@application.route("/analysis/sentiment", methods=['GET'])
 def analyze_sentiment():
     # Respond if the request is a GET request.
     if request.method == 'GET':
